@@ -1,0 +1,247 @@
+{
+ "context": 3,
+ "title": "Міграція внутрішньої системи обліку на нові сервери",
+ "about": "Команда адміністраторів переносить внутрішню систему обліку підприємства зі старих серверів на нові: база даних, службові модулі, резервне копіювання, доступ користувачів. Перемикання можливе лише у вихідні.",
+ "interview_notes": [
+  "Частину старих сервісів ніхто не документував, повний перелік залежностей невідомий.",
+  "Вікно простою у вихідні обмежене, план відкоту ще не складено.",
+  "Обладнання замовлено у постачальника, строки поставки не гарантовано.",
+  "Користувачі звикли до старого інтерфейсу й неохоче проходять навчання."
+ ],
+ "budget": 450000,
+ "duration_days": 60,
+ "duration_weeks": 12,
+ "team": [
+  "Павло Заєць",
+  "Ірина Ткач",
+  "Роман Кравець",
+  "Оксана Литвин",
+  "Богдан Шульга"
+ ],
+ "zone_bounds": [
+  5,
+  9,
+  15
+ ],
+ "tolerance": "середня",
+ "reserve_cap_pct": 20,
+ "metrics": {
+  "unlisted_services": 2,
+  "restore_test_failures": 0,
+  "rehearsal_minutes": 200,
+  "delivery_delay_days": 8,
+  "config_defects": 1,
+  "rollback_plan_ready": 0,
+  "trained_users_pct": 65,
+  "legacy_module_failures": 0
+ },
+ "candidate_risks": [
+  {
+   "id": "R-01",
+   "text": "Через неповну інвентаризацію старих сервісів → під час міграції буде пропущено залежний сервіс → відділи втратять доступ до даних на кілька годин",
+   "category": "технічний",
+   "p": 4,
+   "i": 4,
+   "pct": 60,
+   "loss": 60000,
+   "days": 5,
+   "owner": "Богдан Шульга",
+   "trigger": {
+    "metric": "unlisted_services",
+    "op": ">",
+    "value": 0
+   },
+   "avoidable": true,
+   "transfer_cost": null,
+   "mitigate_cost": 10000,
+   "scope": "project",
+   "p_drop": 3,
+   "i_drop": 0
+  },
+  {
+   "id": "R-02",
+   "text": "Через помилки у скриптах перенесення бази → частину записів буде втрачено → доведеться відновлювати дані з архіву",
+   "category": "технічний",
+   "p": 2,
+   "i": 5,
+   "pct": 20,
+   "loss": 100000,
+   "days": 6,
+   "owner": "Ірина Ткач",
+   "trigger": {
+    "metric": "restore_test_failures",
+    "op": ">=",
+    "value": 1
+   },
+   "avoidable": false,
+   "transfer_cost": null,
+   "mitigate_cost": 20000,
+   "scope": "project",
+   "p_drop": 1,
+   "i_drop": 3
+  },
+  {
+   "id": "R-03",
+   "text": "Через обмежене вікно простою у вихідні → перемикання не вкладеться в час → системою не зможуть користуватися в понеділок",
+   "category": "організаційний",
+   "p": 3,
+   "i": 5,
+   "pct": 35,
+   "loss": 90000,
+   "days": 2,
+   "owner": "Роман Кравець",
+   "trigger": {
+    "metric": "rehearsal_minutes",
+    "op": ">",
+    "value": 240
+   },
+   "avoidable": true,
+   "transfer_cost": null,
+   "mitigate_cost": 18000,
+   "scope": "project",
+   "p_drop": 2,
+   "i_drop": 1
+  },
+  {
+   "id": "R-04",
+   "text": "Через затримку постачання обладнання → нові сервери прибудуть пізніше → вся міграція зсунеться",
+   "category": "зовнішній",
+   "p": 3,
+   "i": 4,
+   "pct": 45,
+   "loss": 40000,
+   "days": 14,
+   "owner": "Павло Заєць",
+   "trigger": {
+    "metric": "delivery_delay_days",
+    "op": ">",
+    "value": 5
+   },
+   "avoidable": false,
+   "transfer_cost": 12000,
+   "mitigate_cost": 15000,
+   "scope": "project",
+   "p_drop": 1,
+   "i_drop": 0
+  },
+  {
+   "id": "R-05",
+   "text": "Через недостатні знання засобів віртуалізації → налаштування буде виконано з помилками → знадобиться повторне налаштування",
+   "category": "технічний",
+   "p": 3,
+   "i": 3,
+   "pct": 50,
+   "loss": 25000,
+   "days": 6,
+   "owner": "Роман Кравець",
+   "trigger": {
+    "metric": "config_defects",
+    "op": ">",
+    "value": 3
+   },
+   "avoidable": false,
+   "transfer_cost": null,
+   "mitigate_cost": 9000,
+   "scope": "project",
+   "p_drop": 2,
+   "i_drop": 1
+  },
+  {
+   "id": "R-06",
+   "text": "Через відсутність плану відкоту → невдале перемикання неможливо буде скасувати → простій затягнеться на добу",
+   "category": "управлінський",
+   "p": 2,
+   "i": 5,
+   "pct": 15,
+   "loss": 120000,
+   "days": 1,
+   "owner": "Ірина Ткач",
+   "trigger": {
+    "metric": "rollback_plan_ready",
+    "op": "==",
+    "value": 0
+   },
+   "avoidable": true,
+   "transfer_cost": null,
+   "mitigate_cost": 4000,
+   "scope": "project",
+   "p_drop": 1,
+   "i_drop": 3
+  },
+  {
+   "id": "R-07",
+   "text": "Через опір користувачів змінам → вони не пройдуть навчання → зросте кількість звернень до підтримки",
+   "category": "організаційний",
+   "p": 4,
+   "i": 2,
+   "pct": 70,
+   "loss": 18000,
+   "days": 3,
+   "owner": "Оксана Литвин",
+   "trigger": {
+    "metric": "trained_users_pct",
+    "op": "<",
+    "value": 70
+   },
+   "avoidable": false,
+   "transfer_cost": null,
+   "mitigate_cost": 5000,
+   "scope": "project",
+   "p_drop": 2,
+   "i_drop": 0
+  },
+  {
+   "id": "R-08",
+   "text": "Через розбіжності версій програмного забезпечення → старі модулі не запрацюють на нових серверах → доведеться оновлювати модулі",
+   "category": "технічний",
+   "p": 3,
+   "i": 3,
+   "pct": 40,
+   "loss": 35000,
+   "days": 8,
+   "owner": "Богдан Шульга",
+   "trigger": {
+    "metric": "legacy_module_failures",
+    "op": ">",
+    "value": 2
+   },
+   "avoidable": false,
+   "transfer_cost": null,
+   "mitigate_cost": 14000,
+   "scope": "project",
+   "p_drop": 1,
+   "i_drop": 1
+  }
+ ],
+ "sprint_events": [
+  {
+   "sprint": 1,
+   "type": "reassess",
+   "id": "R-06",
+   "p": 1
+  },
+  {
+   "sprint": 2,
+   "type": "occurred",
+   "id": "R-05"
+  },
+  {
+   "sprint": 2,
+   "type": "closed",
+   "id": "R-04"
+  },
+  {
+   "sprint": 3,
+   "type": "new",
+   "id": "R-09",
+   "p": 2,
+   "i": 4
+  },
+  {
+   "sprint": 4,
+   "type": "reassess",
+   "id": "R-01",
+   "p": 2
+  }
+ ]
+}

@@ -1,0 +1,247 @@
+{
+ "context": 1,
+ "title": "Інтернет-магазин «Книжкова полиця»",
+ "about": "Команда з п'яти осіб будує інтернет-магазин книжок: каталог, кошик, оплата карткою, особистий кабінет. Замовник — мережа книгарень; запуск прив'язаний до осіннього сезону продажів.",
+ "interview_notes": [
+  "Замовник уже двічі змінював сценарій оформлення замовлення, остання зміна була за тиждень до демонстрації.",
+  "Оплата працює через зовнішній платіжний шлюз; договір не містить гарантій щодо стабільності протоколу.",
+  "Автоматичних тестів поки немає, перевіряє вручну один тестувальник.",
+  "Хостинг хмарний, бюджет на нього обмежений; у минулому сезоні сайт замовника «лягав» під час акції."
+ ],
+ "budget": 600000,
+ "duration_days": 80,
+ "duration_weeks": 16,
+ "team": [
+  "Олена Бойко",
+  "Ігор Мельник",
+  "Марта Коваль",
+  "Денис Шевчук",
+  "Софія Гнатюк"
+ ],
+ "zone_bounds": [
+  4,
+  9,
+  16
+ ],
+ "tolerance": "середня",
+ "reserve_cap_pct": 15,
+ "metrics": {
+  "changed_requirements": 5,
+  "gateway_errors_pct": 1,
+  "sick_days": 7,
+  "test_coverage_pct": 55,
+  "load_peak_pct": 60,
+  "search_p95_ms": 900,
+  "law_changes": 0,
+  "open_conflicts": 1
+ },
+ "candidate_risks": [
+  {
+   "id": "R-01",
+   "text": "Через нечіткі вимоги до кошика → замовник змінить сценарій оформлення вже після розробки → доведеться переробляти модуль і зсунеться реліз",
+   "category": "організаційний",
+   "p": 4,
+   "i": 4,
+   "pct": 60,
+   "loss": 90000,
+   "days": 12,
+   "owner": "Софія Гнатюк",
+   "trigger": {
+    "metric": "changed_requirements",
+    "op": ">",
+    "value": 3
+   },
+   "avoidable": false,
+   "transfer_cost": null,
+   "mitigate_cost": 12000,
+   "scope": "project",
+   "p_drop": 2,
+   "i_drop": 0
+  },
+  {
+   "id": "R-02",
+   "text": "Через залежність від зовнішнього платіжного шлюзу → шлюз змінить протокол без попередження → оплата перестане працювати й зірветься запуск",
+   "category": "зовнішній",
+   "p": 2,
+   "i": 5,
+   "pct": 25,
+   "loss": 120000,
+   "days": 10,
+   "owner": "Ігор Мельник",
+   "trigger": {
+    "metric": "gateway_errors_pct",
+    "op": ">",
+    "value": 2
+   },
+   "avoidable": false,
+   "transfer_cost": 15000,
+   "mitigate_cost": 30000,
+   "scope": "project",
+   "p_drop": 0,
+   "i_drop": 2
+  },
+  {
+   "id": "R-03",
+   "text": "Через хвороби в малій команді → ключовий розробник вибуде на два тижні → завдання спринту не буде завершено",
+   "category": "організаційний",
+   "p": 3,
+   "i": 3,
+   "pct": 40,
+   "loss": 30000,
+   "days": 10,
+   "owner": "Олена Бойко",
+   "trigger": {
+    "metric": "sick_days",
+    "op": ">",
+    "value": 5
+   },
+   "avoidable": false,
+   "transfer_cost": null,
+   "mitigate_cost": 8000,
+   "scope": "project",
+   "p_drop": 1,
+   "i_drop": 1
+  },
+  {
+   "id": "R-04",
+   "text": "Через відсутність автоматичних тестів → дефекти потраплять у реліз → покупці побачать помилки оплати й підуть до конкурента",
+   "category": "технічний",
+   "p": 3,
+   "i": 4,
+   "pct": 35,
+   "loss": 60000,
+   "days": 5,
+   "owner": "Денис Шевчук",
+   "trigger": {
+    "metric": "test_coverage_pct",
+    "op": "<",
+    "value": 60
+   },
+   "avoidable": false,
+   "transfer_cost": null,
+   "mitigate_cost": 14000,
+   "scope": "project",
+   "p_drop": 2,
+   "i_drop": 1
+  },
+  {
+   "id": "R-05",
+   "text": "Через стислий бюджет хмарного хостингу → навантаження в акцію перевищить ліміт → сайт буде недоступний у розпал продажів",
+   "category": "технічний",
+   "p": 2,
+   "i": 4,
+   "pct": 20,
+   "loss": 45000,
+   "days": 2,
+   "owner": "Ігор Мельник",
+   "trigger": {
+    "metric": "load_peak_pct",
+    "op": ">",
+    "value": 80
+   },
+   "avoidable": false,
+   "transfer_cost": 9000,
+   "mitigate_cost": 6000,
+   "scope": "project",
+   "p_drop": 1,
+   "i_drop": 2
+  },
+  {
+   "id": "R-06",
+   "text": "Через нестачу досвіду з пошуковим рушієм → пошук працюватиме повільно → користувачі кидатимуть кошик",
+   "category": "технічний",
+   "p": 3,
+   "i": 2,
+   "pct": 45,
+   "loss": 15000,
+   "days": 4,
+   "owner": "Марта Коваль",
+   "trigger": {
+    "metric": "search_p95_ms",
+    "op": ">",
+    "value": 800
+   },
+   "avoidable": false,
+   "transfer_cost": null,
+   "mitigate_cost": 7000,
+   "scope": "project",
+   "p_drop": 1,
+   "i_drop": 0
+  },
+  {
+   "id": "R-07",
+   "text": "Через зміну законодавства про персональні дані → знадобиться нова згода користувачів → доведеться додати модуль згод і затримати запуск",
+   "category": "зовнішній",
+   "p": 1,
+   "i": 4,
+   "pct": 10,
+   "loss": 40000,
+   "days": 8,
+   "owner": "Софія Гнатюк",
+   "trigger": {
+    "metric": "law_changes",
+    "op": ">=",
+    "value": 1
+   },
+   "avoidable": false,
+   "transfer_cost": null,
+   "mitigate_cost": null,
+   "scope": "project",
+   "p_drop": 0,
+   "i_drop": 0
+  },
+  {
+   "id": "R-08",
+   "text": "Через конфлікт пріоритетів зацікавлених сторін → команда отримає суперечливі завдання → втратиться час на узгодження",
+   "category": "управлінський",
+   "p": 4,
+   "i": 2,
+   "pct": 55,
+   "loss": 20000,
+   "days": 6,
+   "owner": "Олена Бойко",
+   "trigger": {
+    "metric": "open_conflicts",
+    "op": ">",
+    "value": 2
+   },
+   "avoidable": false,
+   "transfer_cost": null,
+   "mitigate_cost": 3000,
+   "scope": "project",
+   "p_drop": 1,
+   "i_drop": 0
+  }
+ ],
+ "sprint_events": [
+  {
+   "sprint": 1,
+   "type": "reassess",
+   "id": "R-01",
+   "p": 3
+  },
+  {
+   "sprint": 2,
+   "type": "occurred",
+   "id": "R-03"
+  },
+  {
+   "sprint": 2,
+   "type": "new",
+   "id": "R-09",
+   "p": 2,
+   "i": 3
+  },
+  {
+   "sprint": 3,
+   "type": "closed",
+   "id": "R-07"
+  },
+  {
+   "sprint": 4,
+   "type": "reassess",
+   "id": "R-04",
+   "p": 2
+  }
+ ]
+}

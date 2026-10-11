@@ -1,0 +1,25 @@
+{
+ "project": {
+  "name": "",
+  "goal": "",
+  "budget": 0,
+  "duration_weeks": 0,
+  "team": []
+ },
+ "scale": {
+  "bounds": [
+   4,
+   9,
+   16
+  ],
+  "tolerance": "середня",
+  "reserve_cap_pct": 20
+ },
+ "risks": [],
+ "reserve": {
+  "money": 0,
+  "days": 0,
+  "pct_of_budget": 0.0
+ },
+ "review": []
+}

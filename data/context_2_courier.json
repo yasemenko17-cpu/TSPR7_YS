@@ -1,0 +1,247 @@
+{
+ "context": 2,
+ "title": "Мобільний застосунок служби доставки «Кур'єр»",
+ "about": "Команда з шести осіб створює мобільний застосунок для кур'єрів і клієнтів служби доставки: прийом замовлень, маршрут на карті, оплата, сповіщення. Пілот у двох районах міста заплановано через двадцять тижнів.",
+ "interview_notes": [
+  "Версію для iOS треба пройти перевірку магазину застосунків; минулого разу вона тривала понад тиждень.",
+  "Кур'єри працюють у щільній забудові, де сигнал GPS нестабільний.",
+  "Тестових пристроїв лише шість, а клієнти користуються різними моделями.",
+  "Картографічний сервіс платний за кількістю запитів; постачальник анонсував перегляд тарифів."
+ ],
+ "budget": 900000,
+ "duration_days": 100,
+ "duration_weeks": 20,
+ "team": [
+  "Андрій Левченко",
+  "Катерина Мороз",
+  "Тарас Гринюк",
+  "Вікторія Сидоренко",
+  "Максим Данилюк",
+  "Юлія Остапчук"
+ ],
+ "zone_bounds": [
+  3,
+  8,
+  15
+ ],
+ "tolerance": "середня",
+ "reserve_cap_pct": 12,
+ "metrics": {
+  "review_wait_days": 6,
+  "gps_error_m": 20,
+  "device_coverage_pct": 75,
+  "map_cost_growth_pct": 10,
+  "designer_absence_days": 0,
+  "payment_incidents": 0,
+  "response_p95_ms": 1500,
+  "partner_api_delay_days": 9
+ },
+ "candidate_risks": [
+  {
+   "id": "R-01",
+   "text": "Через довгу перевірку магазином застосунків → випуск iOS-версії затримається → не вдасться почати пілот у заплановану дату",
+   "category": "зовнішній",
+   "p": 3,
+   "i": 4,
+   "pct": 40,
+   "loss": 50000,
+   "days": 7,
+   "owner": "Катерина Мороз",
+   "trigger": {
+    "metric": "review_wait_days",
+    "op": ">",
+    "value": 5
+   },
+   "avoidable": false,
+   "transfer_cost": null,
+   "mitigate_cost": 5000,
+   "scope": "project",
+   "p_drop": 1,
+   "i_drop": 0
+  },
+  {
+   "id": "R-02",
+   "text": "Через нестабільний GPS у щільній забудові → маршрут кур'єра відображатиметься з похибкою → клієнти скаржитимуться й скасовуватимуть замовлення",
+   "category": "технічний",
+   "p": 4,
+   "i": 3,
+   "pct": 65,
+   "loss": 36000,
+   "days": 4,
+   "owner": "Тарас Гринюк",
+   "trigger": {
+    "metric": "gps_error_m",
+    "op": ">",
+    "value": 25
+   },
+   "avoidable": false,
+   "transfer_cost": null,
+   "mitigate_cost": 20000,
+   "scope": "project",
+   "p_drop": 2,
+   "i_drop": 1
+  },
+  {
+   "id": "R-03",
+   "text": "Через нестачу тестових пристроїв → частина моделей не буде перевірена → після релізу з'являться збої на цих моделях",
+   "category": "технічний",
+   "p": 4,
+   "i": 3,
+   "pct": 55,
+   "loss": 45000,
+   "days": 3,
+   "owner": "Максим Данилюк",
+   "trigger": {
+    "metric": "device_coverage_pct",
+    "op": "<",
+    "value": 80
+   },
+   "avoidable": false,
+   "transfer_cost": null,
+   "mitigate_cost": 16000,
+   "scope": "project",
+   "p_drop": 2,
+   "i_drop": 1
+  },
+  {
+   "id": "R-04",
+   "text": "Через зміну тарифів картографічного сервісу → вартість запитів зросте → бюджет експлуатації буде перевищено",
+   "category": "зовнішній",
+   "p": 3,
+   "i": 3,
+   "pct": 35,
+   "loss": 80000,
+   "days": 0,
+   "owner": "Андрій Левченко",
+   "trigger": {
+    "metric": "map_cost_growth_pct",
+    "op": ">",
+    "value": 20
+   },
+   "avoidable": false,
+   "transfer_cost": 15000,
+   "mitigate_cost": 10000,
+   "scope": "project",
+   "p_drop": 1,
+   "i_drop": 1
+  },
+  {
+   "id": "R-05",
+   "text": "Через вихід дизайнера з проєкту → макети не буде оновлено вчасно → розробка інтерфейсу простоюватиме",
+   "category": "організаційний",
+   "p": 2,
+   "i": 4,
+   "pct": 15,
+   "loss": 55000,
+   "days": 9,
+   "owner": "Юлія Остапчук",
+   "trigger": {
+    "metric": "designer_absence_days",
+    "op": ">",
+    "value": 3
+   },
+   "avoidable": false,
+   "transfer_cost": null,
+   "mitigate_cost": 6000,
+   "scope": "project",
+   "p_drop": 1,
+   "i_drop": 1
+  },
+  {
+   "id": "R-06",
+   "text": "Через помилки в обробці оплати → кошти спишуться двічі → з'являться повернення коштів і втрата довіри",
+   "category": "технічний",
+   "p": 2,
+   "i": 5,
+   "pct": 20,
+   "loss": 150000,
+   "days": 6,
+   "owner": "Вікторія Сидоренко",
+   "trigger": {
+    "metric": "payment_incidents",
+    "op": ">=",
+    "value": 1
+   },
+   "avoidable": true,
+   "transfer_cost": null,
+   "mitigate_cost": 25000,
+   "scope": "project",
+   "p_drop": 1,
+   "i_drop": 2
+  },
+  {
+   "id": "R-07",
+   "text": "Через перевантаження серверів у години пік → застосунок відповідатиме повільно → кур'єри не зможуть приймати замовлення",
+   "category": "технічний",
+   "p": 3,
+   "i": 4,
+   "pct": 35,
+   "loss": 70000,
+   "days": 5,
+   "owner": "Вікторія Сидоренко",
+   "trigger": {
+    "metric": "response_p95_ms",
+    "op": ">",
+    "value": 1200
+   },
+   "avoidable": false,
+   "transfer_cost": 12000,
+   "mitigate_cost": 18000,
+   "scope": "project",
+   "p_drop": 1,
+   "i_drop": 1
+  },
+  {
+   "id": "R-08",
+   "text": "Через відмову партнера надати програмний інтерфейс складу → не вдасться показувати наявність товарів → доведеться вводити залишки вручну",
+   "category": "зовнішній",
+   "p": 2,
+   "i": 3,
+   "pct": 25,
+   "loss": 40000,
+   "days": 8,
+   "owner": "Андрій Левченко",
+   "trigger": {
+    "metric": "partner_api_delay_days",
+    "op": ">",
+    "value": 7
+   },
+   "avoidable": false,
+   "transfer_cost": null,
+   "mitigate_cost": null,
+   "scope": "org",
+   "p_drop": 0,
+   "i_drop": 0
+  }
+ ],
+ "sprint_events": [
+  {
+   "sprint": 1,
+   "type": "occurred",
+   "id": "R-02"
+  },
+  {
+   "sprint": 2,
+   "type": "reassess",
+   "id": "R-01",
+   "p": 2
+  },
+  {
+   "sprint": 3,
+   "type": "new",
+   "id": "R-09",
+   "p": 2,
+   "i": 4
+  },
+  {
+   "sprint": 3,
+   "type": "closed",
+   "id": "R-05"
+  },
+  {
+   "sprint": 4,
+   "type": "closed",
+   "id": "R-02"
+  }
+ ]
+}
